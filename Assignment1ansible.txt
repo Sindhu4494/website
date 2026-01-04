@@ -1,0 +1,48 @@
+master node 
+========================================
+1  sudo apt update
+    2  sudo nano a.sh
+    3  bash a.sh
+    4  ansible --version
+   5  ssh-keygen
+   hit enter 3 times for key generation
+6.cd .ssh
+7.ls
+8.cat id_rsa.pub
+-----
+cd /etc/ansible/
+ls
+sudo nano hosts
+[slave1] (create a clustor)
+(enter private ip for slave1)
+[slave2] (create a clustor)
+(enter private ip for slave2)
+
+ansible -m ping all
+type "yes" and enter
+
+sudo nano play1.yaml(create a playbook and write commands)
+
+ansible-playbook play1.yaml --syntax-check
+ansible-playbook play1.yaml --check
+ansible-playbook play1.yaml
+
+slave1 node
+======================
+
+    2  sudo apt update
+    3  cd .ssh
+    4  ls
+    5  sudo nano authorized_keys
+paste id_rsa.pub key from master and save it
+    6  history
+
+
+slave2 node
+================================================
+ 2  sudo apt update
+    3  cd .ssh
+    4  ls
+    5  sudo nano authorized_keys
+paste id_rsa.pub key from master and save it
+    6  history
