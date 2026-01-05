@@ -16,6 +16,6 @@ spec:
     spec: 
       containers: 
       - name: custom 
-        image: docker6767/image 
+        image: capstone2/image 
         ports: 
         - containerPort: 80
