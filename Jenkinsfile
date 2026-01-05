@@ -1,34 +1,42 @@
 pipeline {
-    agent any
+    agent none
+
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('c7e243d3-d5c1-4596-87ef-bf9af9e72f78')
+        IMAGE_NAME = "sindhureddy4494/capstone2:latest"
+    }
 
     stages {
 
-        stage('Build') {
+        stage('Hello') {
+            agent { label 'Kmaster' }
             steps {
-                git branch: "${env.BRANCH_NAME}",
-                    url: 'https://github.com/Sindhu4494/website/'
-
-                sh 'docker build -t abode-webapp:${BUILD_NUMBER} .'
+                echo 'Hello World'
             }
         }
 
-        stage('Test') {
+        stage('Git Checkout') {
+            agent { label 'Kmaster' }
             steps {
-                sh 'echo "Running application tests..."'
-                sh 'docker run --rm abode-webapp:${BUILD_NUMBER} echo "Tests Passed"'
+                checkout scm
             }
         }
 
-        stage('Prod') {
-            when {
-                branch 'master'
-            }
+        stage('Docker Build & Push') {
+            agent { label 'Kmaster' }
             steps {
                 sh '''
-                docker stop webapp || true
-                docker rm webapp || true
-                docker run -d --name webapp -p 80:80 abode-webapp:${BUILD_NUMBER}
+                  docker build -t $IMAGE_NAME .
+                  echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+                  docker push $IMAGE_NAME
                 '''
+            }
+        }
+
+        stage('Kubernetes Deploy') {
+            agent { label 'Kmaster' }
+            steps {
+                sh 'kubectl apply -f deployment.yaml'
             }
         }
     }
