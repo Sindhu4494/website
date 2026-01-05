@@ -16,6 +16,6 @@ spec:
     spec: 
       containers: 
       - name: custom 
-        image:  sindhureddy4494/capstone2/image
+        image:  sindhureddy4494/capstone2:latest
         ports: 
         - containerPort: 80
