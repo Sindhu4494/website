@@ -1,0 +1,62 @@
+cd /etc/ansible
+cd roles
+sudo ansible-galaxy init apache2
+ls
+cd apache2/
+ls
+cd tasks/
+ls
+sudo nano install.yaml
+---------------------------------------
+---
+- name: install apache2
+  apt: name=apache2 state=latest
+--------------------------------------------
+sudo nano main.yaml
+------------------------------------------------
+---
+- include_tasks: install.yaml
+-------------------------------------------------
+cd ..
+cd ..
+cd roles
+sudo ansible-galaxy init nginx
+ls
+cd ngnix/
+ls
+cd tasks/
+ls
+sudo nano install.yaml
+---------------------------------------
+---
+- name: install nginx
+  apt: name=nginx state=latest
+--------------------------------------------
+sudo nano main.yaml
+------------------------------------------------
+---
+- include_tasks: install.yaml
+-------------------------------------------------
+cd
+sudo nano play3.yaml
+-------------------------------------------------------
+---
+- name: install apache role for slave1
+  hosts: slave1
+  become: true
+  roles:
+  - apache2
+
+- name: install apache role for slave2
+  hosts: slave2
+  become: true
+  roles:
+  - ngnix
+------------------------------------------------------------
+ansible-playbook play3.yaml --syntax-check
+    ansible-playbook play3.yaml --check
+ ansible-playbook play3.yaml
+
+
+
+check the versions in slave1 and 2
