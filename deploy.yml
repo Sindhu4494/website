@@ -18,4 +18,4 @@ spec:
       - name: custom 
         image:  sindhureddy4494/capstone2:latest
         ports: 
-        - containerPort: 85
+        - containerPort: 80
